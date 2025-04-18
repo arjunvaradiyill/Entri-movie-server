@@ -12,8 +12,7 @@ const app = express();
 
 // CORS Configuration
 const corsOptions = {
-  origin: ['https://moviereviewapp-client.onrender.com', 'http://localhost:3000', 'http://localhost:3001'],
-  credentials: true,
+  origin: '*', // Allow requests from any origin
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   optionsSuccessStatus: 200
