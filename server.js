@@ -12,9 +12,10 @@ const app = express();
 
 // CORS Configuration
 const corsOptions = {
-  origin: '*', // Allow requests from any origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://movie-review-client.vercel.app', 'https://movie-review-ten.vercel.app'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  credentials: true,
   optionsSuccessStatus: 200
 };
 
