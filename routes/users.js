@@ -360,4 +360,36 @@ router.post('/me/profile-picture/upload', auth, upload.single('profilePicture'),
   }
 });
 
+// Delete user (admin only)
+router.delete('/:id', [auth, isAdmin], async (req, res) => {
+  try {
+    // Don't allow admins to delete themselves
+    if (req.params.id === req.user._id.toString()) {
+      return res.status(400).json({ message: 'You cannot delete your own account' });
+    }
+
+    // Check if user exists
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Don't allow deleting other admins
+    if (user.role === 'admin') {
+      return res.status(400).json({ message: 'Cannot delete another admin account' });
+    }
+
+    // Delete user
+    await User.findByIdAndDelete(req.params.id);
+
+    // Delete all reviews by this user
+    await Review.deleteMany({ user: req.params.id });
+
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ message: 'Error deleting user' });
+  }
+});
+
 module.exports = router; 

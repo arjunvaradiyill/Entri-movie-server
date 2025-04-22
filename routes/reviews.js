@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
-const { auth } = require('../middleware/auth');
+const { auth, isAdmin } = require('../middleware/auth');
 const Review = require('../models/Review');
 const Movie = require('../models/Movie');
 
@@ -158,5 +158,16 @@ router.delete('/:id',
     }
   }
 );
+
+// Get review count for a specific user (admin only)
+router.get('/count/user/:userId', [auth, isAdmin], async (req, res) => {
+  try {
+    const count = await Review.countDocuments({ user: req.params.userId });
+    res.json({ count });
+  } catch (error) {
+    console.error('Error counting user reviews:', error);
+    res.status(500).json({ message: 'Error counting user reviews' });
+  }
+});
 
 module.exports = router; 
