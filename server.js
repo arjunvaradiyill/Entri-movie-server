@@ -12,7 +12,13 @@ const app = express();
 
 // CORS Configuration
 const corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:3001', 'https://movie-review-client.vercel.app', 'https://movie-review-ten.vercel.app'],
+  origin: [
+    'http://localhost:3000', 
+    'http://localhost:3001', 
+    'https://movie-review-client.vercel.app', 
+    'https://movie-review-ten.vercel.app',
+    'https://moviereviewapp-client.onrender.com'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   credentials: true,
@@ -22,6 +28,9 @@ const corsOptions = {
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// Handle OPTIONS requests explicitly for CORS preflight
+app.options('*', cors(corsOptions));
 
 // Serve static files from the uploads directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
